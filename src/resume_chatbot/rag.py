@@ -45,7 +45,7 @@ retriever = vectorstore.as_retriever(search_kwargs={'k':5})
 llm = ChatOpenAI(
     model="gpt-4o-mini",
     temperature=0,
-    api_key=get_api_key()
+    api_key=get_api_key(),
 )
 
 
@@ -57,7 +57,8 @@ def ask(query, history):
     history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
 
     prompt = f"""
-        Use the context below to answer the question
+        Use the context below to answer the question in first person on anything in the resume. 
+        ONLY answer questions that have to do with resume
 
         Conversation History:
         {history_text}
@@ -71,3 +72,31 @@ def ask(query, history):
     response = llm.invoke(prompt)
     history.append((query, response.content))
     return response.content
+
+
+def ask_stream(query, history):
+    relevant_docs = retriever.invoke(query)
+    context = "\n\n".join([doc.page_content for doc in relevant_docs])
+    # recent_history = history[-5:]
+
+    history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
+
+    prompt = f"""
+        Use the context below to answer the question in first person
+
+        Conversation History:
+        {history_text}
+
+        Context:
+        {context}
+
+        Question:
+        {query}
+"""
+    full_answer = ""
+    for chunk in llm.stream(prompt):
+        if chunk:
+            full_answer += chunk.content
+            yield chunk.content
+
+    history.append((query, full_answer))
