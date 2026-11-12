@@ -2,37 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewpost" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mosh | AI Engineer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Mosopefoluwa Oluwashina</h1>
-        <p>AI engineer: agents, RAG, and ML pipelines</p>
+    <nav class="topbar">
+        <a class="logo" href="#">Mosh</a>
+        <div class="links">
+            <a href="#projects">Projects</a>
+            <a href="#chat">Chat</a>
+        </div>
+        <a href="https://github.com/Mosh1132" class="button">GitHub</a>
+    </nav>
+    <header class="hero">
+        <p class="eyebrow">AI ENGINEER · CANADA</p>
+        <h1> I build AI agents <span class="gradient">that ship.</span></h1>
+        <p class="lead">I'm a computer scientist in Ottawa, with an Honours degree in AI and Machine Learning from Carleton University.
+  I build agentic AI systems in Python, from multi-agent tools with human approval steps to RAG assistants that cite their sources.</p>
+        <div class="actions">
+            <a class="button" href="#projects">See my work</a>
+            <a href="https://www.linkedin.com/in/mosopefoluwa-oluwashina-9428b6300/" class="button ghost">LinkedIn</a>
+        </div>
     </header>
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I’m a computer scientist based in Ottawa who graduated from Carleton University in 2026 with an Honours
-            degree in AI and Machine Learning. I build agentic AI systems in Python, from multi agent tools with human
-            approval steps to RAG assistants that cite their sources. Most recently I was an AI Engineer at LoveWorld
-            Canada, and I’m looking for a role where I can keep building reliable, well tested AI products.</p>
-    </section>
-    <section id="projects">
-        <h2>Projects</h2>
-        <p>Cards go here later</p>
-    </section>
-    <section id="chat">
-        <h2>Ask my resume</h2>
-        <p>The chat box goes here later</p>
-    </section>
-    <footer id="contact">
-        <h2>Contact</h2>
-        <ul>
-            <li><a href="mailto:moluwashina@gmail.com">Email</a></li>
-            <li><a href="https://www.linkedin.com/in/mosopefoluwa-oluwashina-9428b6300/">LinkedIn</a></li>
-            <li><a href="https://github.com/Mosh1132">Github</a></li>
-        </ul>
-
+    <main>
+        <section id="projects">
+            <h2>Things I've built</h2>
+            <div class="grid">
+                <article class="card">
+                    <h3>Support Agent</h3>
+                    <p>A router sends each question to an orders agent or a read-only policy agent. Large refunds wait for a human.</p>
+                    <p class="stat">Routing accuracy 90% → 95% on 20 test questions</p>
+                    <ul>
+                        <li>Python</li>
+                        <li>FastAPI</li>
+                        <li>Pinecone</li>
+                        <li>Docker</li>
+                    </ul>
+                    <a href="https://github.com/Mosh1132/support-agent">View on GitHub</a>
+                </article>
+                <article class="card">
+                    <h3>Resume Chatbot</h3>
+                    <p>Ask questions about my experience, and get answers from my own documents.</p>
+                    <p class="stat">In progress</p>
+                    <ul>
+                        <li>RAG</li>
+                        <li>LangChain</li>
+                        <li>streaming</li>
+                    </ul>
+                    <a href="#chat">Try it below</a>
+                </article>
+                <article class="card">
+                    <h3>Text-to-SQL Evaluation</h3>
+                    <p>A reproducibility study showing exact-match scoring badly underestimates LLM performance.</p>
+                    <p class="stat">0.0 exact match vs ~83% valid SQL on BIRD</p>
+                    <ul>
+                        <li>LLMs</li>
+                        <li>evaluation</li>
+                        <li>OpenAI API</li>
+                    </ul>
+                    <a href="https://github.com/Mosh1132/text-to-sql-eval-sensitivity">View on GitHub</a>
+                </article>
+                <article class="card">
+                    <h3>Lung Segmentation</h3>
+                    <p>U-Net and Attention U-Net on chest X-rays, tested under noise, blur, and contrast loss.</p>
+                    <p class="stat">U-Net: Dice 0.87 on clean images. Noise-trained Attention U-Net: 0.84 under low contrast</p>
+                    <ul>
+                        <li>Deep learning</li>
+                        <li>segmentation</li>
+                    </ul>
+                    <a href="https://github.com/Mosh1132/lung-segmentation-robustness">View on GitHub</a>
+                </article>
+                <article class="card">
+                    <h3>Emoji-Aware Sentiment</h3>
+                    <p>Do emojis improve sentiment classification? Three strategies across classical and neural models.</p>
+                    <p class="stat">Emojis changed accuracy by 0.001</p>
+                    <ul>
+                        <li>NLP</li>
+                        <li>scikit-learn</li>
+                        <li>BiLSTM</li>
+                    </ul>
+                    <a href="https://github.com/Mosh1132/emoji-aware-sentiment-analysis">View on GitHub</a>
+                </article>
+                <article class="card">
+                    <h3>Stroke Prediction</h3>
+                    <p>Class-imbalance handling for a rare-event medical dataset.</p>
+                    <p class="stat">Upsampling lifted recall to ~0.80 to 0.85, but precision stayed low (~0.12 to 0.14)</p>
+                    <ul>
+                        <li>R</li>
+                        <li>imbalance</li>
+                        <li>evaluation</li>
+                    </ul>
+                    <a href="https://github.com/Mosh1132/stroke-prediction-r">View on GitHub</a>
+                </article>
+            </div>
+        </section>
+        <section id="chat">
+            <h2>Ask me anything</h2>
+            <p>The chat box goes here</p>
+        </section>
+    </main>
+    <footer>
+        <p>Mosh Oluwashina</p>
     </footer>
 </body>
 </html>
