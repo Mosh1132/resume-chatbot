@@ -14,7 +14,9 @@ WINDOW = 60        # per this many seconds
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5500", "http://127.0.0.1:5500"],
+    allow_origins=["http://localhost:5500", "http://127.0.0.1:5500","https://mosh1132.github.io",
+    "https://oluwashina.ca",
+    "https://www.oluwashina.ca",],
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
 )

@@ -1,4 +1,6 @@
-const API_URL = "http://127.0.0.1:8080";
+const API_URL = location.hostname === "localhost"
+    ? "http://127.0.0.1:8080"
+    : "https://resume-chatbot-612795367728.us-central1.run.app";
 const sessionId = crypto.randomUUID();
 const messages = document.getElementById("messages");
 const form = document.getElementById("chat-form");
