@@ -48,15 +48,16 @@ In the Multi Agent Customer Support System, Mosh added retries with exponential 
 In the Multi Agent Customer Support System, Mosh served the agent through FastAPI with Pydantic validation and per session history, with a Streamlit chat page, both containerized with Docker Compose.
 In the Multi Agent Customer Support System, Mosh wrote 45 pytest tests with the network faked, and they run on every push through GitHub Actions.
 
-## Project: Resume Chatbot and personal website (personal project, in progress)
+## Project: Resume Chatbot and personal website (personal project, live)
 
-The Resume Chatbot and personal website is a personal project by Mosh. It is a RAG assistant for recruiters that answers questions about Mosh using only his resume and project documentation. The code is at https://github.com/Mosh1132/resume-chatbot
+The Resume Chatbot and personal website is a personal project by Mosh. It is a RAG assistant for recruiters that answers questions about Mosh using only his resume and project documentation. The live site is https://oluwashina.ca and the code is at https://github.com/Mosh1132/resume-chatbot
 In the Resume Chatbot, documents are split into chunks of about 500 characters with 50 characters of overlap, embedded with OpenAI embeddings, and stored in Pinecone. The 5 closest chunks are retrieved for each question.
 In the Resume Chatbot, the model is told to answer only from the retrieved text, and to say "I don't have that information" when the answer is not in the documents.
-In the Resume Chatbot, Mosh built a FastAPI backend with per visitor session history, a limit on question length, rate limiting per visitor, and CORS restricted to the site's address, with all API keys kept on the server.
+In the Resume Chatbot, Mosh built a FastAPI backend with per visitor session history, a limit on question length, rate limiting per visitor, and CORS restricted to his own site's addresses, with all API keys kept on the server.
 In the Resume Chatbot, Mosh built a streaming endpoint, so the answer appears word by word in the chat window.
 In the Resume Chatbot, Mosh built the personal website himself in HTML, CSS and JavaScript, with a responsive layout, automatic dark mode, a grid of project cards, and a chat widget that calls the API with fetch.
-In the Resume Chatbot, Mosh is deploying the website on GitHub Pages and the API on Google Cloud Run.
+In the Resume Chatbot, Mosh packaged the API in a Docker container and deployed it on Google Cloud Run, with a cap on the number of instances and a monthly spend cap on the service.
+In the Resume Chatbot, Mosh published the website on GitHub Pages and connected his own domain, oluwashina.ca, using DNS records at Cloudflare and HTTPS.
 
 ## Project: Text-to-SQL Evaluation Sensitivity (Fall 2025, Carleton University, team of three)
 
@@ -103,8 +104,8 @@ Mosh's agent frameworks are LangChain, LlamaIndex, CrewAI and the OpenAI Agents 
 Mosh's RAG skills are chunking, embeddings, semantic search, citations and grounded answers, ChromaDB, Pinecone, retrieval evaluation with MRR, and hallucination mitigation.
 Mosh's machine learning and data skills are QLoRA fine tuning, classification models (logistic regression, random forest, SVMs), class imbalance handling (upsampling, SMOTE, stratified splits), model evaluation (accuracy, recall, precision, F1), forecasting, A/B testing, Tableau dashboards, Google Analytics and Hotjar.
 Mosh's backend skills are FastAPI, REST APIs, Server-Sent Events streaming, Pydantic validation, asynchronous endpoints, SQLite, rate limiting, CORS, admin key authentication, and retries with exponential backoff and jitter.
-Mosh's testing and delivery skills are pytest (including faked network tests), evaluation suites, GitHub Actions CI, Docker, Docker Compose and Git.
-Mosh is learning Google Cloud Run by deploying his Resume Chatbot API to it.
+Mosh's testing and delivery skills are pytest (including faked network tests), evaluation suites, GitHub Actions CI, Docker, Docker Compose, Git, Google Cloud Run, GitHub Pages and Cloudflare DNS.
+Mosh has deployed his Resume Chatbot API on Google Cloud Run, and his cloud experience is Google Cloud Run only.
 Mosh uses AI coding tools every day: Claude Code, Codex and Cursor.
 
 ## What Mosh has not done
