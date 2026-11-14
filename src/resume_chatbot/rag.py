@@ -1,18 +1,18 @@
 import os
 import time
 from resume_chatbot.config import get_api_key, get_pinecone_key
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
 
 pc = Pinecone(api_key=get_pinecone_key())
-index_name = "resume"
+index_name = "knowledge"
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-pdf_path = os.path.join(current_dir, "..", "..", "data", "resume.pdf")
-loader = PyPDFLoader(file_path=pdf_path)
+pdf_path = os.path.join(current_dir, "..", "..", "data", "knowledge.md")
+loader = TextLoader(file_path=pdf_path, encoding="utf-8")
 document = loader.load()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 chunks = text_splitter.split_documents(document)
@@ -34,18 +34,19 @@ if index_name not in pc.list_indexes().names():
 
     index = pc.Index(index_name)
     PineconeVectorStore.from_documents(
-        index_name="resume",
+        index_name="knowledge",
         embedding=embeddings,
         documents=chunks
     )
 
 vectorstore = PineconeVectorStore(index_name=index_name, embedding=embeddings)
-retriever = vectorstore.as_retriever(search_kwargs={'k':5})
+retriever = vectorstore.as_retriever(search_kwargs={'k':3})
 
 llm = ChatOpenAI(
     model="gpt-4o-mini",
     temperature=0,
     api_key=get_api_key(),
+    max_tokens=200
 )
 
 
@@ -57,8 +58,10 @@ def ask(query, history):
     history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
 
     prompt = f"""
-        Use the context below to answer the question in first person on anything in the resume. 
-        ONLY answer questions that have to do with resume
+        You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
+    Use only the context below. Refer to him as "Mosh" or "he", never "I".
+    Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+    If the answer is not in the context, say "I don't have that information."
 
         Conversation History:
         {history_text}
