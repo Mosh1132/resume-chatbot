@@ -46,7 +46,7 @@ form.addEventListener("submit", async function (event) {
         if (!response.ok) {
             throw new Error(`Server replied ${response.status}`);
         }
-
+        const sources = (response.headers.get("X-Sources") || "").split("|").filter(Boolean);
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         bubble.textContent = "";
@@ -58,6 +58,17 @@ form.addEventListener("submit", async function (event) {
             }
             bubble.textContent += decoder.decode(value, { stream: true });
             messages.scrollTop = messages.scrollHeight;
+        }
+        if (sources.length && !bubble.textContent.includes("I don't have that information")) {
+            const box = document.createElement("div");
+            box.className = "sources";
+            for (const s of sources) {
+                const tag = document.createElement("span");
+                tag.className = "source-tag";
+                tag.textContent = s;
+                box.appendChild(tag);
+          }
+          bubble.appendChild(box);
         }
     } catch (error) {
         if (error.message === "rate limited") {

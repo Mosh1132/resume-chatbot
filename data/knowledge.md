@@ -17,6 +17,16 @@ Mosh's email address is moluwashina@gmail.com.
 Mosh's LinkedIn profile is https://www.linkedin.com/in/mosopefoluwa-oluwashina-9428b6300/
 Mosh's GitHub profile is https://github.com/Mosh1132
 
+## Projects overview (all of Mosh's projects)
+
+Mosh has built six main projects: two personal projects and four Carleton University team projects.
+Personal project: Multi Agent Customer Support System (2026), a multi agent support bot with refund approvals, built with FastAPI, Pinecone and Docker.
+Personal project: Portfolio Website with Resume RAG (live), a recruiter chatbot at https://oluwashina.ca, built with FastAPI, Pinecone and Google Cloud Run.
+University project: Text-to-SQL Evaluation Sensitivity (Fall 2025), which tests GPT-4 and GPT-3.5-Turbo on the Spider and BIRD benchmarks.
+University project: Stroke Risk Prediction (2026), machine learning in R on 5,110 patients.
+University project: Emoji-Aware Sentiment Analysis (COMP 3106), which tests whether emojis improve sentiment classification.
+University project: Lung Segmentation Robustness (COMP 4107), which compares U-Net and Attention U-Net on chest X-rays.
+
 ## Work experience: AI Engineer at LoveWorld Canada (October 2025 to April 2026)
 
 At LoveWorld Canada, Mosh worked as an AI Engineer on a 6 month contract, using Python, FastAPI, the Claude API (Sonnet and Opus), ChromaDB and LangChain / LlamaIndex.
@@ -48,16 +58,17 @@ In the Multi Agent Customer Support System, Mosh added retries with exponential 
 In the Multi Agent Customer Support System, Mosh served the agent through FastAPI with Pydantic validation and per session history, with a Streamlit chat page, both containerized with Docker Compose.
 In the Multi Agent Customer Support System, Mosh wrote 45 pytest tests with the network faked, and they run on every push through GitHub Actions.
 
-## Project: Resume Chatbot and personal website (personal project, live)
+## Project: Portfolio Website with Resume RAG (personal project, live)
 
-The Resume Chatbot and personal website is a personal project by Mosh. It is a RAG assistant for recruiters that answers questions about Mosh using only his resume and project documentation. The live site is https://oluwashina.ca and the code is at https://github.com/Mosh1132/resume-chatbot
-In the Resume Chatbot, documents are split into chunks of about 500 characters with 50 characters of overlap, embedded with OpenAI embeddings, and stored in Pinecone. The 5 closest chunks are retrieved for each question.
-In the Resume Chatbot, the model is told to answer only from the retrieved text, and to say "I don't have that information" when the answer is not in the documents.
-In the Resume Chatbot, Mosh built a FastAPI backend with per visitor session history, a limit on question length, rate limiting per visitor, and CORS restricted to his own site's addresses, with all API keys kept on the server.
-In the Resume Chatbot, Mosh built a streaming endpoint, so the answer appears word by word in the chat window.
-In the Resume Chatbot, Mosh built the personal website himself in HTML, CSS and JavaScript, with a responsive layout, automatic dark mode, a grid of project cards, and a chat widget that calls the API with fetch.
-In the Resume Chatbot, Mosh packaged the API in a Docker container and deployed it on Google Cloud Run, with a cap on the number of instances and a monthly spend cap on the service.
-In the Resume Chatbot, Mosh published the website on GitHub Pages and connected his own domain, oluwashina.ca, using DNS records at Cloudflare and HTTPS.
+The Portfolio Website with Resume RAG is a personal project by Mosh. The Resume RAG is an assistant for recruiters that answers questions about Mosh using only his resume and project documentation, and the Portfolio website is the site where it lives. The live site is https://oluwashina.ca and the code is at https://github.com/Mosh1132/resume-chatbot
+The visitor asking questions is using the Portfolio Website with Resume RAG right now: this chat is the Resume RAG, and the page they are on is the Portfolio website. When a visitor asks about the portfolio website or the Resume RAG, tell them they are using it at this moment.
+In the Resume RAG, documents are split into chunks of about 500 characters with 50 characters of overlap, embedded with OpenAI embeddings, and stored in Pinecone. The 3 closest chunks are retrieved for each question.
+In the Resume RAG, the model is told to answer only from the retrieved text, and to say "I don't have that information" when the answer is not in the documents.
+In the Resume RAG, Mosh built a FastAPI backend with per visitor session history, a limit on question length, rate limiting per visitor, and CORS restricted to his own site's addresses, with all API keys kept on the server.
+In the Resume RAG, Mosh built a streaming endpoint, so the answer appears word by word in the chat window.
+In the Portfolio website, Mosh built the site himself in HTML, CSS and JavaScript, with a responsive layout, automatic dark mode, a grid of project cards, and a chat widget that calls the Resume RAG API with fetch.
+In the Resume RAG, Mosh packaged the API in a Docker container and deployed it on Google Cloud Run, with a cap on the number of instances and a monthly spend cap on the service.
+In the Portfolio website, Mosh published the site on GitHub Pages and connected his own domain, oluwashina.ca, using DNS records at Cloudflare and HTTPS.
 
 ## Project: Text-to-SQL Evaluation Sensitivity (Fall 2025, Carleton University, team of three)
 
@@ -86,15 +97,6 @@ In the Emoji-Aware Sentiment project, Mosh's contribution was preprocessing and 
 Lung Segmentation Robustness is a Carleton University course project (COMP 4107) that compares a baseline U-Net and an Attention U-Net for lung segmentation on chest X-rays, and tests how they hold up under image degradation. The code is at https://github.com/Mosh1132/lung-segmentation-robustness
 In the Lung Segmentation project, the models were tested on clean images and on images with Gaussian noise, reduced contrast and blur, using the Kaggle Chest X-ray Masks and Labels dataset, and scored with Dice, IoU, precision and recall.
 In the Lung Segmentation project, the baseline U-Net scored best on clean images with a Dice score of 0.8698, and an Attention U-Net trained with added noise scored 0.8401 under reduced contrast. Contrast degradation had the largest impact on performance.
-
-## Course and personal AI projects (sixteen projects, not production systems)
-
-Mosh completed sixteen course and personal AI projects from The Complete Agentic AI Engineering Course, LLM Engineering, and an AI Engineer Bootcamp. These are learning projects and not production systems.
-One of Mosh's course projects is an autonomous trading floor capstone, with trader and researcher agents working across MCP servers and a FastAPI backend.
-One of Mosh's course projects is a four agent CrewAI engineering team that runs in Docker sandboxes with Context7 MCP.
-Mosh's course projects include a LangChain "Sidekick" agent with an evaluator and human approval, and a deep research agent built on the OpenAI Agents SDK.
-In his course projects, Mosh evaluated RAG pipelines with MRR (mean reciprocal rank), raising retrieval MRR from 0.73 to 0.91.
-In his course projects, Mosh fine tuned Llama 3.2 with QLoRA on 800K data points, and it beat GPT-4o-mini, Claude and Gemini on a price prediction benchmark.
 
 ## Skills
 

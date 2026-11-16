@@ -2,7 +2,7 @@ import os
 import time
 from resume_chatbot.config import get_api_key, get_pinecone_key
 from langchain_community.document_loaders import TextLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
@@ -14,8 +14,12 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 pdf_path = os.path.join(current_dir, "..", "..", "data", "knowledge.md")
 loader = TextLoader(file_path=pdf_path, encoding="utf-8")
 document = loader.load()
+header_splitter = MarkdownHeaderTextSplitter(headers_to_split_on=([('##', 'section')]))
+sections = header_splitter.split_text(document[0].page_content)
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-chunks = text_splitter.split_documents(document)
+chunks = text_splitter.split_documents(sections)
+for c in chunks:
+    c.page_content = f"{c.metadata.get('section', '')}\n{c.page_content}"
 embeddings = OpenAIEmbeddings(api_key=get_api_key())
 
 if index_name not in pc.list_indexes().names():
@@ -40,7 +44,7 @@ if index_name not in pc.list_indexes().names():
     )
 
 vectorstore = PineconeVectorStore(index_name=index_name, embedding=embeddings)
-retriever = vectorstore.as_retriever(search_kwargs={'k':3})
+retriever = vectorstore.as_retriever(search_kwargs={'k':5})
 
 llm = ChatOpenAI(
     model="gpt-4o-mini",
@@ -48,12 +52,21 @@ llm = ChatOpenAI(
     api_key=get_api_key(),
     max_tokens=200
 )
+def get_docs(query):
+    return retriever.invoke(query)
 
+
+def get_sources(docs):
+    seen = []
+    for d in docs:
+        s = d.metadata.get("section")
+        if s and s not in seen:
+            seen.append(s)
+    return seen
 
 def ask(query, history):
     relevant_docs = retriever.invoke(query)
     context = "\n\n".join([doc.page_content for doc in relevant_docs])
-    # recent_history = history[-5:]
 
     history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
 
@@ -61,6 +74,8 @@ def ask(query, history):
         You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
     Use only the context below. Refer to him as "Mosh" or "he", never "I".
     Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+        If the question is about the portfolio website or the Resume RAG, say that this chat is the Resume RAG and the 
+        visitor is using Mosh's portfolio website right now.
     If the answer is not in the context, say "I don't have that information."
 
         Conversation History:
@@ -77,15 +92,15 @@ def ask(query, history):
     return response.content
 
 
-def ask_stream(query, history):
-    relevant_docs = retriever.invoke(query)
-    context = "\n\n".join([doc.page_content for doc in relevant_docs])
-    # recent_history = history[-5:]
-
+def ask_stream(query, history, docs):
+    context = "\n\n".join([doc.page_content for doc in docs])
     history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
 
     prompt = f"""
-        Use the context below to answer the question in first person
+        You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
+    Use only the context below. Speak in first person.
+    Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+    If the answer is not in the context, say "I don't have that information."
 
         Conversation History:
         {history_text}

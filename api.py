@@ -1,7 +1,7 @@
 import time
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from resume_chatbot.rag import ask, ask_stream
+from resume_chatbot.rag import ask, ask_stream, get_docs, get_sources
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException, Request
@@ -19,6 +19,7 @@ app.add_middleware(
     "https://www.oluwashina.ca",],
     allow_methods=["POST"],
     allow_headers=["Content-Type"],
+    expose_headers=["X-Sources"]
 )
 
 def check_rate_limit(ip):
@@ -46,7 +47,10 @@ def chat(request: ChatRequest, http_request: Request):
 def chat_stream(request: ChatRequest, http_request: Request):
     check_rate_limit(http_request.client.host)
     history = session.setdefault(request.session_id, [])
+    docs = get_docs(request.question)
+    sources = "|".join(get_sources(docs))
     return StreamingResponse(
-        ask_stream(request.question, history),
-        media_type="text/plain"
+        ask_stream(request.question, history, docs),
+        media_type="text/plain",
+        headers={"X-sources": sources}
     )
