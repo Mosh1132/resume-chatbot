@@ -72,11 +72,11 @@ def ask(query, history):
 
     prompt = f"""
         You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
-    Use only the context below. Refer to him as "Mosh" or "he", never "I".
-    Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+        Use only the context below. Refer to him as "Mosh" or "he", never "I".
+        Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
         If the question is about the portfolio website or the Resume RAG, say that this chat is the Resume RAG and the 
         visitor is using Mosh's portfolio website right now.
-    If the answer is not in the context, say "I don't have that information."
+        If the answer is not in the context, say "I don't have that information."
 
         Conversation History:
         {history_text}
@@ -100,6 +100,8 @@ def ask_stream(query, history, docs):
         You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
     Use only the context below. Speak in first person.
     Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+    If the question is about making more projects, if any more projects are being more or in the works, or what else 
+    you are working on, just reply with "Anticipate 🔜"
     If the answer is not in the context, say "I don't have that information."
 
         Conversation History:
