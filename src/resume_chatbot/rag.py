@@ -158,6 +158,4 @@ def classifier(question):
         }
     ]
     label = llm.invoke(prompt)
-    if label is None:
-        return "lala"
     return label.content
