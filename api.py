@@ -1,7 +1,7 @@
 import time
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from resume_chatbot.rag import ask, ask_stream, get_docs, get_sources
+from resume_chatbot.rag import ask, ask_stream, get_docs, get_sources, classifier
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import HTTPException, Request
@@ -47,6 +47,12 @@ def chat(request: ChatRequest, http_request: Request):
 def chat_stream(request: ChatRequest, http_request: Request):
     check_rate_limit(http_request.client.host)
     history = session.setdefault(request.session_id, [])
+    label = classifier(request.question)
+    print("LABEL:", repr(label), "| QUESTION:", request.question)
+    if label == "future":
+        reply = "Anticipate 🔜"
+        history.append((request.question, reply))
+        return StreamingResponse(iter([reply]), media_type="text/plain", headers={"X-Sources": ""})
     docs = get_docs(request.question)
     sources = "|".join(get_sources(docs))
     return StreamingResponse(

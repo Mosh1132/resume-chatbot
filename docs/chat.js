@@ -59,7 +59,7 @@ form.addEventListener("submit", async function (event) {
             bubble.textContent += decoder.decode(value, { stream: true });
             messages.scrollTop = messages.scrollHeight;
         }
-        if (sources.length && !bubble.textContent.includes("I don't have that information") && !bubble.textContent.includes("Anticipate")) {
+        if (sources.length && !bubble.textContent.includes("I don't have that information")) {
             const box = document.createElement("div");
             box.className = "sources";
             for (const s of sources) {

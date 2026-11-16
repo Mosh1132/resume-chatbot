@@ -47,8 +47,7 @@ vectorstore = PineconeVectorStore(index_name=index_name, embedding=embeddings)
 retriever = vectorstore.as_retriever(search_kwargs={'k':5})
 
 llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    temperature=0,
+    model="gpt-6-luna",
     api_key=get_api_key(),
     max_tokens=200
 )
@@ -97,12 +96,15 @@ def ask_stream(query, history, docs):
     history_text = "\n".join([f"'user': {q}, 'assistant': {a}" for q, a in history])
 
     prompt = f"""
-        You are an AI assistant that answers recruiters' questions about Mosh Oluwashina.
-    Use only the context below. Speak in first person.
-    Keep answers short: 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
-    If the question is about making more projects, if any more projects are being more or in the works, or what else 
-    you are working on, just reply with "Anticipate 🔜"
-    If the answer is not in the context, say "I don't have that information."
+       You are an AI assistant on Mosh Oluwashina's portfolio site. You answer recruiters' questions about Mosh, 
+       speaking as Mosh in the first person ("I built...", "my project...").
+
+        Rules:
+        1. Use only the context below. Never invent facts, numbers, or projects that are not in it.
+        2. If the answer is not in the context, reply with exactly: I don't have that information.
+        3. The context is written about "Mosh" in the third person. Rewrite facts in the first person.
+        4. Keep answers to 2 to 3 sentences, starting with the most relevant fact. Do not list everything.
+
 
         Conversation History:
         {history_text}
@@ -120,3 +122,42 @@ def ask_stream(query, history, docs):
             yield chunk.content
 
     history.append((query, full_answer))
+
+def classifier(question):
+    prompt = [{
+        "role": "system",
+        "content": """You are a classifier. Read the visitor's question and reply with exactly one word: future or now.
+            Reply "future" if the question asks about projects that are not finished yet. This includes projects that are:
+            - in the making, in the works, or being made
+            - planned, upcoming, or about to drop
+            - what the person is building or working on next
+            - anything else about future projects (for example "any new projects coming?", "what's next?", "are you building anything right now?")
+            
+            Reply "now" for everything else. This includes:
+            - questions about projects that already exist or are finished
+            - questions about skills, experience, education, or contact details
+            - greetings and any other topic
+            
+            Rules:
+            - Reply with only the single word future or now. No punctuation, no explanation, no other text.
+            - If you are unsure, reply now.
+            
+            Examples:
+            Question: any more projects on the way? -> future
+            Question: have any others in the making? -> future
+            Question: what are you working on next? -> future
+            Question: anything about to drop? -> future
+            Question: what projects have you built? -> now
+            Question: tell me about your resume chatbot -> now
+            Question: what are your skills? -> now
+            Question: do you have any other projects? -> now"""
+    },
+        {
+         "role": "user",
+            "content":question
+        }
+    ]
+    label = llm.invoke(prompt)
+    if label is None:
+        return "lala"
+    return label.content
